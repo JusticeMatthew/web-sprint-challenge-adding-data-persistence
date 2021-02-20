@@ -7,8 +7,8 @@ const router = express.Router();
 
 // Middleware to validate the body contents
 function validate(req, res, next) {
-  const newTask = req.body.task_desc;
-  newTask
+  const { task_description, project_id } = req.body;
+  task_description && project_id
     ? next()
     : res.status(400).json({ message: 'Task description is REQUIRED' });
 }
@@ -33,8 +33,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', validate, async (req, res, next) => {
   try {
-    const task = req.body;
-    const data = await Tasks.post(task);
+    const data = await Tasks.post(req.body);
     const fixedData = await {
       ...data,
       task_completed: convert.intToBoolean(data.task_completed),

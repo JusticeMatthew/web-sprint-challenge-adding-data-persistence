@@ -4,7 +4,7 @@ exports.up = function (knex) {
       // Projects
       .createTable('projects', (t) => {
         t.increments('project_id');
-        t.string('project_name').notNullable();
+        t.string('project_name').unique().notNullable();
         t.text('project_description');
         t.boolean('project_completed').notNullable().defaultTo(false);
       })
@@ -24,11 +24,6 @@ exports.up = function (knex) {
           .unsigned()
           .notNullable()
           .references('project_id')
-          .inTable('projects');
-        t.string('project_name')
-          .unsigned()
-          .notNullable()
-          .references('project_name')
           .inTable('projects');
       })
       // Project resources
