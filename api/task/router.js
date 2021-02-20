@@ -16,13 +16,14 @@ function validate(req, res, next) {
 router.get('/', async (req, res, next) => {
   try {
     const data = await Tasks.get();
-    const fixedData = await data.map((task) => {
-      return {
-        ...task,
-        task_completed: convert.intToBoolean(task.task_completed),
-      };
-    });
-    res.json(fixedData);
+    res.json(
+      data.map((task) => {
+        return {
+          ...task,
+          task_completed: convert.intToBoolean(task.task_completed),
+        };
+      }),
+    );
   } catch (err) {
     res.status(500).json({
       Error: `DATABASE ERROR: ${err.errno}, please contact your database admin`,
